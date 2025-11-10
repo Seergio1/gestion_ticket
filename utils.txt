@@ -1,0 +1,47 @@
+php artisan optimize:clear
+
+php artisan make:model Projet -m
+php artisan make:model Ticket -m
+
+php artisan migrate:fresh
+
+php artisan make:livewire ProjetList
+php artisan make:livewire ProjetForm
+php artisan make:livewire TicketList
+php artisan make:livewire TicketForm
+php artisan make:export TicketsExport --model=Ticket
+
+
+composer require maatwebsite/excel
+
+
+#lien symbolique pour afficher l'image
+php artisan storage:link 
+
+// Création utilisateur
+php artisan tinker
+
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
+User::create([
+    'name' => 'Admin',
+    'email' => 'admin@example.com',
+    'password' => Hash::make('1234'),
+    'role' => 'admin',
+]);
+
+User::create([
+    'name' => 'Sergio',
+    'email' => 'sergio@example.com',
+    'password' => Hash::make('1234'),
+    'role' => 'user',
+]);
+
+User::create([
+    'name' => 'Misa',
+    'email' => 'misa@example.com',
+    'password' => Hash::make('1234'),
+    'role' => 'user',
+]);
