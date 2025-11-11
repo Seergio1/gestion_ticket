@@ -134,11 +134,26 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `users_email_unique` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Listage de la structure de table project_management. acces_projets
+CREATE TABLE IF NOT EXISTS `acces_projets` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) unsigned NOT NULL,
+  `projet_id` bigint(20) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `acces_projets_user_id_foreign` (`user_id`),
+  KEY `acces_projets_projet_id_foreign` (`projet_id`),
+  CONSTRAINT `acces_projets_projet_id_foreign` FOREIGN KEY (`projet_id`) REFERENCES `projets` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `acces_projets_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Listage des données de la table project_management.users : ~3 rows (environ)
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `role`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin', 'di@smmec.mg', NULL, '$2y$10$w217mb8XLV.lWYmIPXr7R.4//vctI3bn.SzTcI25IWJoP7X2llAIK', NULL, 'admin', '2025-11-10 03:16:59', '2025-11-10 03:16:59'),
-	(2, 'Sergio', 'dev1.info@smmec.mg', NULL, '$2y$10$vGd.BWANMtnDIc0xO6fqOu.j0KkvDXwlZAnR.QzX0AD.mvnoT5yYa', NULL, 'user', '2025-11-10 03:16:59', '2025-11-10 03:16:59'),
-	(3, 'Misa', 'misa.info@smmec.mg', NULL, '$2y$10$7wSwNk17zUiJL5tmljpbi.pHlc0QlK4oV0f/0VQgKSe.phPC3P5Pm', NULL, 'user', '2025-11-10 03:17:00', '2025-11-10 03:17:00');
+	(2, 'Sergio', 'dev1.info@smmec.mg', NULL, '$2y$10$vGd.BWANMtnDIc0xO6fqOu.j0KkvDXwlZAnR.QzX0AD.mvnoT5yYa', NULL, 'admin', '2025-11-10 03:16:59', '2025-11-10 03:16:59'),
+	(3, 'Misa', 'misa.info@smmec.mg', NULL, '$2y$10$7wSwNk17zUiJL5tmljpbi.pHlc0QlK4oV0f/0VQgKSe.phPC3P5Pm', NULL, 'admin', '2025-11-10 03:17:00', '2025-11-10 03:17:00'),
+  (4, 'Testeur', 'testeur.info@smmec.mg', NULL, '$2y$10$fVzny4qh5Bf7qVyIIg2aEOt9yruTHvEkR7fIaOF1YaRpEV2eDtY5C', NULL, 'user', '2025-11-10 03:17:00', '2025-11-10 03:17:00');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
