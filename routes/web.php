@@ -26,6 +26,8 @@ Route::get('/', function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/projets', ProjetList::class)->name('projets.index');
     Route::get('/projets/create', ProjetForm::class)->middleware('admin')->name('projets.create');
+    Route::get('/projets/{projet}/edit', ProjetForm::class)->middleware('admin')->name('projets.edit');
+
     Route::get('/projets/{projet}/tickets', TicketList::class)->name('tickets.index');
     Route::get('/projets/{projet}/tickets/create', TicketForm::class)->name('tickets.create');
     Route::get('/projets/{projet}/tickets/{ticket}/edit', TicketForm::class)->name('tickets.edit');

@@ -24,10 +24,12 @@
             <img src="{{ asset('icons/filtre.svg') }}" alt="filter-icon" class="w-4 h-4">
         </button>
 
-        <a href="{{ route('tickets.create', $projet->id) }}" 
-           class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
-            Création
-        </a>
+        @if(auth()->user()->role === 'admin')
+            <a href="{{ route('tickets.create', $projet->id) }}" 
+            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
+                Création
+            </a>
+        @endif
 
         <button id="ExportButton" wire:click="exportExcel"
                 class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">

@@ -65,23 +65,21 @@ class TicketForm extends Component
 
     public function save()
     {
-        if ($this->ticketId) {
-            $ticket = Ticket::findOrFail($this->ticketId);
-        } else {
-            $ticket = new Ticket();
-            $ticket->projet_id = $this->projet->id;
-            $ticket->created_by = Auth::id();
+        if (!$this->ticketId && Auth::user()->role !== 'admin') {
+            session()->flash('message', 'Vous n’êtes pas autorisé à créer un ticket.');
+            return redirect()->route('tickets.index', $this->projet->id);
         }
 
-        $ancienFichiers = $ticket->fichiers ?? [];
-        foreach ($ancienFichiers as $file) {
-            if (!in_array($file, $this->fichiersExistants)) {
-                Storage::disk('public')->delete($file);
-            }
+        $ticket = $this->ticketId
+            ? Ticket::findOrFail($this->ticketId)
+            : new Ticket(['projet_id' => $this->projet->id, 'created_by' => Auth::id()]);
+
+        // Empêche les non-admins de modifier module et scenario
+        if (Auth::user()->role === 'admin') {
+            $ticket->module = $this->module;
+            $ticket->scenario = $this->scenario;
         }
 
-        $ticket->module = $this->module;
-        $ticket->scenario = $this->scenario;
         $ticket->etat = $this->etat;
         $ticket->status = $this->status;
         $ticket->commentaire = $this->commentaire;

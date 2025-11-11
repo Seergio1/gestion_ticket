@@ -17,4 +17,16 @@ class Projet extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    // Relation avec les utilisateurs ayant accès
+    public function accesProjets()
+    {
+        return $this->hasMany(AccesProjet::class);
+    }
+
+    // Relation pratique many-to-many pour récupérer directement les users
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'acces_projets', 'projet_id', 'user_id');
+    }
 }

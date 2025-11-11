@@ -145,3 +145,6 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+
+INSERT INTO `acces_projet` (`id`, `user_id`, `projet_id`, `created_at`, `updated_at`) VALUES
+  (1, 2, 1, '2025-11-11 03:17:00', '2025-11-11 03:17:00');

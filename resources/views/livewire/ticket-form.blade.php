@@ -22,11 +22,13 @@
         <form wire:submit.prevent="save">
 
             <label class="block mt-2 font-semibold">Module</label>
-            <input type="text" wire:model="module" class="w-full border rounded p-2">
+            <input type="text" wire:model="module" class="w-full border rounded p-2"
+                @if(auth()->user()->role !== 'admin') disabled @endif>
             @error('module') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
             <label class="block mt-2 font-semibold">Scenario</label>
-            <textarea wire:model="scenario" class="w-full border rounded p-2"></textarea>
+            <textarea wire:model="scenario" class="w-full border rounded p-2"
+                @if(auth()->user()->role !== 'admin') disabled @endif></textarea>
             @error('scenario') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
             <label class="block mt-2 font-semibold">Etat</label>
