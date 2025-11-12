@@ -23,6 +23,8 @@ class TicketForm extends Component
     public $fichiers = [];
     public $fichiersExistants = [];
 
+    public $fichiersASupprimer = [];
+
     public $projet;
 
     protected $rules = [
@@ -84,8 +86,18 @@ class TicketForm extends Component
         $ticket->status = $this->status;
         $ticket->commentaire = $this->commentaire;
         $ticket->fichiers = $this->fichiersExistants;
+        $ticket->updated_by = Auth::id();
 
         $ticket->save();
+
+        // Supprimer les fichiers marqués pour suppression
+        if (!empty($this->fichiersASupprimer)) {
+            foreach ($this->fichiersASupprimer as $filePath) {
+                if (Storage::disk('public')->exists($filePath)) {
+                    Storage::disk('public')->delete($filePath);
+                }
+            }
+        }
 
         session()->flash('message', $this->ticketId ? 'Ticket mis à jour !' : 'Ticket créé !');
 
@@ -94,8 +106,11 @@ class TicketForm extends Component
 
     public function removeExistingFile($index)
     {
-        unset($this->fichiersExistants[$index]);
-        $this->fichiersExistants = array_values($this->fichiersExistants);
+        if (isset($this->fichiersExistants[$index])) {
+            $this->fichiersASupprimer[] = $this->fichiersExistants[$index];
+            unset($this->fichiersExistants[$index]);
+            $this->fichiersExistants = array_values($this->fichiersExistants);
+        }
     }
 
     public function render()

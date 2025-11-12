@@ -10,7 +10,7 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['projet_id', 'etat', 'module', 'scenario', 'status', 'commentaire', 'fichiers', 'created_by'];
+    protected $fillable = ['projet_id', 'etat', 'module', 'scenario', 'status', 'commentaire', 'fichiers', 'created_by', 'updated_by'];
 
     protected $casts = [
         'fichiers' => 'array'
@@ -24,5 +24,10 @@ class Ticket extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

@@ -15,7 +15,7 @@
         {{-- === EN-TÊTE === --}}
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
     <h2 class="text-xl font-semibold text-gray-800">
-        Tickets pour <span class="text-blue-600">{{ $projet->nom }}</span>
+        Tickets pour <span class="text-blue-600">{{ $projet->nom }} ({{ count($tickets) }})</span>
     </h2>
 
     <div class="flex flex-wrap sm:flex-row items-center gap-2">
@@ -148,13 +148,16 @@
                                         Modifier
                                     </a>
                                 </li>
-                                <li>
-                                    <button wire:click="deleteTicket({{ $ticket->id }})"
-                                            onclick="confirm('Voulez-vous vraiment supprimer ce ticket ?') || event.stopImmediatePropagation()"
-                                            class="text-red-600 hover:text-red-800 w-full text-left">
-                                        Supprimer
-                                    </button>
-                                </li>
+                                @if (auth()->user()->role === 'admin')
+                                    <li>
+                                        <button wire:click="deleteTicket({{ $ticket->id }})"
+                                                onclick="confirm('Voulez-vous vraiment supprimer ce ticket ?') || event.stopImmediatePropagation()"
+                                                class="text-red-600 hover:text-red-800 w-full text-left">
+                                            Supprimer
+                                        </button>
+                                    </li>
+                                @endif
+                                
                             </ul>
                         </div>
                     </div>

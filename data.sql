@@ -108,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `commentaire` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `fichiers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`fichiers`)),
   `created_by` bigint(20) unsigned NOT NULL,
+  `updated_by` bigint(20) unsigned DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -152,8 +153,7 @@ CREATE TABLE IF NOT EXISTS `acces_projets` (
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `role`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin', 'di@smmec.mg', NULL, '$2y$10$w217mb8XLV.lWYmIPXr7R.4//vctI3bn.SzTcI25IWJoP7X2llAIK', NULL, 'admin', '2025-11-10 03:16:59', '2025-11-10 03:16:59'),
 	(2, 'Sergio', 'dev1.info@smmec.mg', NULL, '$2y$10$vGd.BWANMtnDIc0xO6fqOu.j0KkvDXwlZAnR.QzX0AD.mvnoT5yYa', NULL, 'admin', '2025-11-10 03:16:59', '2025-11-10 03:16:59'),
-	(3, 'Misa', 'misa.info@smmec.mg', NULL, '$2y$10$7wSwNk17zUiJL5tmljpbi.pHlc0QlK4oV0f/0VQgKSe.phPC3P5Pm', NULL, 'admin', '2025-11-10 03:17:00', '2025-11-10 03:17:00'),
-  (4, 'Testeur', 'testeur.info@smmec.mg', NULL, '$2y$10$fVzny4qh5Bf7qVyIIg2aEOt9yruTHvEkR7fIaOF1YaRpEV2eDtY5C', NULL, 'user', '2025-11-10 03:17:00', '2025-11-10 03:17:00');
+	(3, 'Misa', 'misa.info@smmec.mg', NULL, '$2y$10$7wSwNk17zUiJL5tmljpbi.pHlc0QlK4oV0f/0VQgKSe.phPC3P5Pm', NULL, 'admin', '2025-11-10 03:17:00', '2025-11-10 03:17:00');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
@@ -161,5 +161,3 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
 
-INSERT INTO `acces_projet` (`id`, `user_id`, `projet_id`, `created_at`, `updated_at`) VALUES
-  (1, 2, 1, '2025-11-11 03:17:00', '2025-11-11 03:17:00');

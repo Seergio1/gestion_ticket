@@ -23,6 +23,7 @@ class CreateTicketsTable extends Migration
             $table->text('commentaire')->nullable();
             $table->json('fichiers')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

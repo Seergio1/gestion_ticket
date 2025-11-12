@@ -18,6 +18,7 @@ composer require maatwebsite/excel
 
 
 #lien symbolique pour afficher l'image
+rmdir public\storage
 php artisan storage:link 
 
 // Création utilisateur
@@ -47,3 +48,30 @@ User::create([
     'password' => Hash::make('1234'),
     'role' => 'user',
 ]);
+
+#en prod 
+
+-editer le env
+
+-installer les dependances
+cd /var/www/html/gestion_ticket
+composer install --no-dev
+
+-créer les fichiers optimisés dans public/build
+npm install
+npm run build
+
+-le serveur web peut écrire dans certains dossiers
+sudo chown -R www-data:www-data /var/www/html/gestion_ticket
+sudo chmod -R 775 /var/www/html/gestion_ticket/storage
+sudo chmod -R 775 /var/www/html/gestion_ticket/bootstrap/cache
+
+APP_DEBUG=false
+
+php artisan key:generate
+
+php artisan storage:link
+
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache

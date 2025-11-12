@@ -15,7 +15,6 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
     protected $tickets;
     protected $sheetName;
 
-    // On passe les tickets filtrés depuis le Livewire
     public function __construct($tickets, $sheetName = 'Tickets')
     {
         $this->tickets = $tickets;
@@ -36,7 +35,9 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
                 'Scénario' => $ticket->scenario,
                 'Commentaire' => $ticket->commentaire,
                 'Créé par' => $ticket->creator->name,
+                'Gérer par' => $ticket->updater ? $ticket->updater->name : '-',
                 'Date création' => $ticket->created_at->format('Y-m-d H:i'),
+                'Date gestion' => $ticket->updated_at ? $ticket->updated_at->format('Y-m-d H:i') : '-'
             ];
         });
     }
@@ -46,7 +47,7 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
      */
     public function headings(): array
     {
-        return ['ID', 'Module', 'État', 'Status', 'Scénario', 'Commentaire', 'Créé par', 'Date création'];
+        return ['ID', 'Module', 'État', 'Status', 'Scénario', 'Commentaire', 'Créé par', 'Gérer par', 'Date création', 'Date gestion'];
     }
 
     public function title(): string
@@ -61,7 +62,7 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
                 $sheet = $event->sheet->getDelegate();
 
                 // Bordures pour tout le tableau
-                $sheet->getStyle('A1:H' . ($this->tickets->count() + 1))
+                $sheet->getStyle('A1:J' . ($this->tickets->count() + 1))
                     ->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
                 // Ajuster la largeur des colonnes
@@ -70,12 +71,12 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
                 }
 
                 // Couleur titre
-                $sheet->getStyle('A1:H1')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
-                $sheet->getStyle('A1:H1')->getFill()
+                $sheet->getStyle('A1:J1')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
+                $sheet->getStyle('A1:J1')->getFill()
                     ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setRGB('4B5563');
 
-                // ↑ Augmenter la hauteur de toutes les lignes
+                // Augmenter la hauteur de toutes les lignes
                 $sheet->getRowDimension(1)->setRowHeight(35); // Titre
                 for ($i = 2; $i <= $this->tickets->count() + 1; $i++) {
                     $sheet->getRowDimension($i)->setRowHeight(35); // Contenu

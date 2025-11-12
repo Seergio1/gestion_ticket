@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 
 // Routes protégées par auth
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/projets', ProjetList::class)->name('projets.index');
     Route::get('/projets/create', ProjetForm::class)->middleware('admin')->name('projets.create');
     Route::get('/projets/{projet}/edit', ProjetForm::class)->middleware('admin')->name('projets.edit');
