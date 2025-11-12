@@ -29,10 +29,11 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
         return $this->tickets->map(function ($ticket) {
             return [
                 'ID' => $ticket->id,
-                'Module' => $ticket->module,
+                'Module' => $ticket->module->nom,
                 'État' => $ticket->etat,
                 'Status' => $ticket->status,
-                'Scénario' => $ticket->scenario,
+                'Fonctionnalité' => $ticket->fonctionnalite->nom,
+                'Decription' => $ticket->fonctionnalite->description,
                 'Commentaire' => $ticket->commentaire,
                 'Créé par' => $ticket->creator->name,
                 'Gérer par' => $ticket->updater ? $ticket->updater->name : '-',
@@ -47,7 +48,7 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
      */
     public function headings(): array
     {
-        return ['ID', 'Module', 'État', 'Status', 'Scénario', 'Commentaire', 'Créé par', 'Gérer par', 'Date création', 'Date gestion'];
+        return ['ID', 'Module', 'État', 'Status', 'Fonctionnalité', 'Decription', 'Commentaire', 'Créé par', 'Gérer par', 'Date création', 'Date gestion'];
     }
 
     public function title(): string
@@ -62,7 +63,7 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
                 $sheet = $event->sheet->getDelegate();
 
                 // Bordures pour tout le tableau
-                $sheet->getStyle('A1:J' . ($this->tickets->count() + 1))
+                $sheet->getStyle('A1:K' . ($this->tickets->count() + 1))
                     ->getBorders()->getAllBorders()->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
 
                 // Ajuster la largeur des colonnes
@@ -71,8 +72,8 @@ class TicketsExport implements FromCollection, WithHeadings, WithEvents, WithTit
                 }
 
                 // Couleur titre
-                $sheet->getStyle('A1:J1')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
-                $sheet->getStyle('A1:J1')->getFill()
+                $sheet->getStyle('A1:K1')->getFont()->setBold(true)->getColor()->setRGB('FFFFFF');
+                $sheet->getStyle('A1:K1')->getFill()
                     ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
                     ->getStartColor()->setRGB('4B5563');
 

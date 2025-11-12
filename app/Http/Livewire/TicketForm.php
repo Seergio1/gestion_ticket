@@ -15,8 +15,7 @@ class TicketForm extends Component
     use WithFileUploads;
 
     public $ticketId;
-    public $module = '';
-    public $scenario = '';
+
     public $etat = 'en cours';
     public $status = 'ok';
     public $commentaire;
@@ -25,11 +24,19 @@ class TicketForm extends Component
 
     public $fichiersASupprimer = [];
 
+
+    public $modules = [];
+    public $fonctionnalites = [];
+    public $module_id = null;
+    public $fonctionnalite_id = null;
+    public $fonctionnalite_description = '';
+
     public $projet;
 
     protected $rules = [
-        'module' => 'required|string|max:255',
-        'scenario' => 'required|string',
+        'module_id' => 'required|exists:modules,id',
+        'fonctionnalite_id' => 'required|exists:fonctionnalites,id',
+        // 'scenario' => 'required|string',
         'etat' => 'required|in:en cours,terminé',
         'status' => 'required|in:ok,à améliorer,non ok',
         'commentaire' => 'nullable|string',
@@ -40,16 +47,33 @@ class TicketForm extends Component
     {
         $this->projet = Projet::findOrFail($projet);
 
+        $this->modules = $this->projet->modules()->get();
+
+        if ($this->modules->isEmpty()) {
+            $this->addError('module_id', 'Aucun module défini pour ce projet. Impossible de créer un ticket.');
+        }
+
         if ($ticket) {
             $ticket = Ticket::findOrFail($ticket);
             Log::info($ticket);
             $this->ticketId = $ticket->id;
-            $this->module = $ticket->module;
-            $this->scenario = $ticket->scenario;
+            $this->module_id = $ticket->module_id ?? null;
+            $this->fonctionnalite_id = $ticket->fonctionnalite_id ?? null;
+            // $this->scenario = $ticket->scenario;
             $this->etat = $ticket->etat;
             $this->status = $ticket->status;
             $this->commentaire = $ticket->commentaire;
             $this->fichiersExistants = $ticket->fichiers ?? [];
+
+
+            // Charger les fonctionnalités si module_id existant
+            if ($this->module_id) {
+                $this->fonctionnalites = $this->modules->where('id', $this->module_id)->first()->fonctionnalites ?? [];
+            }
+
+            if ($this->fonctionnalite_id) {
+                $this->fonctionnalite_description = $this->fonctionnalites->where('id', $this->fonctionnalite_id)->first()->description ?? '';
+            }
         }
     }
 
@@ -67,10 +91,29 @@ class TicketForm extends Component
 
     public function save()
     {
-        if (!$this->ticketId && Auth::user()->role !== 'admin') {
-            session()->flash('message', 'Vous n’êtes pas autorisé à créer un ticket.');
-            return redirect()->route('tickets.index', $this->projet->id);
+        //     if (!$this->ticketId && Auth::user()->role !== 'admin') {
+        //         session()->flash('message', 'Vous n’êtes pas autorisé à créer un ticket.');
+        //         return redirect()->route('tickets.index', $this->projet->id);
+        //     }
+
+
+        // Vérification avant création
+        if ($this->modules->isEmpty()) {
+            $this->addError('module_id', 'Impossible de créer un ticket : aucun module disponible.');
+            return;
         }
+
+        if (!$this->fonctionnalites || $this->fonctionnalites->isEmpty()) {
+            $this->addError('fonctionnalite_id', 'Impossible de créer un ticket : le module sélectionné n’a aucune fonctionnalité.');
+            return;
+        }
+
+        if (!$this->ticketId && Auth::user()->role !== 'admin') {
+            $this->addError('general', 'Vous n’êtes pas autorisé à créer un ticket.');
+            return;
+        }
+
+        $this->validate();
 
         $ticket = $this->ticketId
             ? Ticket::findOrFail($this->ticketId)
@@ -78,8 +121,8 @@ class TicketForm extends Component
 
         // Empêche les non-admins de modifier module et scenario
         if (Auth::user()->role === 'admin') {
-            $ticket->module = $this->module;
-            $ticket->scenario = $this->scenario;
+            $ticket->module_id = $this->module_id;
+            $ticket->fonctionnalite_id = $this->fonctionnalite_id;
         }
 
         $ticket->etat = $this->etat;
@@ -116,5 +159,25 @@ class TicketForm extends Component
     public function render()
     {
         return view('livewire.ticket-form');
+    }
+
+    public function updatedModuleId($module_id)
+    {
+        $module = $this->modules->where('id', $module_id)->first();
+        $this->fonctionnalites = $module ? $module->fonctionnalites : [];
+        $this->fonctionnalite_id = null;
+        $this->fonctionnalite_description = '';
+
+        if ($this->fonctionnalites->isEmpty()) {
+            $this->addError('fonctionnalite_id', 'Le module sélectionné n’a aucune fonctionnalité.');
+        } else {
+            $this->resetErrorBag('fonctionnalite_id');
+        }
+    }
+
+    public function updatedFonctionnaliteId($fonctionnalite_id)
+    {
+        $fonctionnalite = $this->fonctionnalites->where('id', $fonctionnalite_id)->first();
+        $this->fonctionnalite_description = $fonctionnalite->description ?? '';
     }
 }

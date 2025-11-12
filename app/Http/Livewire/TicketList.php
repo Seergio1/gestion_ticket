@@ -12,16 +12,19 @@ use Livewire\Component;
 class TicketList extends Component
 {
     public $projet;
-
+    public $modules = [];
     public $etat = '';
     public $status = '';
     public $dateDebut;
     public $dateFin;
 
+    public $module_id = '';
+
 
     public function mount(Projet $projet)
     {
         $this->projet = $projet;
+        $this->modules = $projet->modules()->orderBy('nom')->get();
     }
 
     public function deleteTicket($ticketId)
@@ -35,7 +38,7 @@ class TicketList extends Component
 
     public function render()
     {
-        $query = $this->projet->tickets()->with('creator');
+        $query = $this->projet->tickets()->with('creator', 'module');
 
         if ($this->etat !== '') {
             $query->where('etat', $this->etat);
@@ -43,6 +46,10 @@ class TicketList extends Component
 
         if ($this->status !== '') {
             $query->where('status', $this->status);
+        }
+
+        if ($this->module_id) {
+            $query->where('module_id', $this->module_id);
         }
 
         if ($this->dateDebut && $this->dateFin) {
@@ -58,7 +65,7 @@ class TicketList extends Component
 
     public function exportExcel()
     {
-        $query = $this->projet->tickets()->with('creator');
+        $query = $this->projet->tickets()->with('creator', 'module');
 
         if ($this->etat !== '') {
             $query->where('etat', $this->etat);
@@ -66,6 +73,10 @@ class TicketList extends Component
 
         if ($this->status !== '') {
             $query->where('status', $this->status);
+        }
+
+        if ($this->module_id) {
+            $query->where('module_id', $this->module_id);
         }
 
         if ($this->dateDebut && $this->dateFin) {
@@ -81,6 +92,7 @@ class TicketList extends Component
     {
         $this->etat = '';
         $this->status = '';
+        $this->module_id = '';
         $this->dateDebut = null;
         $this->dateFin = null;
         $this->render();

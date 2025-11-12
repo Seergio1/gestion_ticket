@@ -9,7 +9,7 @@
         @endif
 
         <div class="header">
-            <h2>Projets</h2>
+            <h2></h2>
             @if(auth()->user()->role === 'admin')
                 <a href="{{ route('projets.create') }}" class="btn-primary">Créer Projet</a>
             @endif
@@ -26,6 +26,7 @@
                     @if(auth()->user()->role === 'admin')
                         <div class="project-actions">
                             <a href="{{ route('projets.edit', $projet->id) }}" class="btn-edit">Modifier</a>
+                            <a href="{{ route('modules.index', $projet) }}" class="btn btn-primary">Module</a>
                             <button wire:click="deleteProjet({{ $projet->id }})" class="btn-delete">Supprimer</button>
                         </div>
                     @endif

@@ -29,4 +29,8 @@ class Projet extends Model
     {
         return $this->belongsToMany(User::class, 'acces_projets', 'projet_id', 'user_id');
     }
+    public function modules()
+    {
+        return $this->hasMany(Module::class, 'projet_id');
+    }
 }

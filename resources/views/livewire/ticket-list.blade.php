@@ -43,6 +43,16 @@
         <div id="filtersPanel" class="filters-panel hidden">
         <div class="filters-grid">
             <div class="filter-item">
+                <label>Module</label>
+                <select wire:model="module_id" class="filter-input">
+                    <option value="">Tous</option>
+                    @foreach($modules as $m)
+                        <option value="{{ $m->id }}">{{ $m->nom }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <div class="filter-item">
                 <label>État</label>
                 <select wire:model="etat" class="filter-input">
                     <option value="">Tous</option>
@@ -85,7 +95,9 @@
             @forelse($tickets as $ticket)
                 <div class="ticket-card">
                     <div class="header-ticket">
-                        <div class="module-content">{{$ticket->id}} - {{ $ticket->module }}</div>
+                        <div class="module-content">
+                            {{ $ticket->id }} - {{ $ticket->module ? $ticket->module->nom : '—' }}
+                        </div>
                         <div class="badge-container">
                             <span class="badge {{ $ticket->etat === 'en cours' ? 'badge-warning' : 'badge-success' }}">
                                 {{ ucfirst($ticket->etat) }}
@@ -103,9 +115,15 @@
                     </div>
 
                     <div class="ticket-body-container">
-                        <div class="scenario-container">
-                            <div>Scénario</div>
-                            <div class="truncate">{{ $ticket->scenario }}</div>
+
+                        <div class="scenario-container"> 
+                            <div>Fonctionnalité</div> 
+                            <div class="truncate">{{ $ticket->fonctionnalite ? $ticket->fonctionnalite->nom : '—' }}</div>
+                        </div>
+
+                        <div class="commentaire-container">
+                                <div>Description</div>
+                                <div class="truncate">{{ $ticket->fonctionnalite ? $ticket->fonctionnalite->description : '—' }}</div>
                         </div>
 
                         @if($ticket->commentaire)

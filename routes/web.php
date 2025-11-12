@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Livewire\FonctionnaliteForm;
+use App\Http\Livewire\FonctionnaliteList;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\ProjetList;
 use App\Http\Livewire\ProjetForm;
 use App\Http\Livewire\TicketList;
 use App\Http\Livewire\TicketForm;
+use App\Http\Livewire\ModuleForm;
+use App\Http\Livewire\ModuleList;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,8 +33,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/projets/{projet}/edit', ProjetForm::class)->middleware('admin')->name('projets.edit');
 
     Route::get('/projets/{projet}/tickets', TicketList::class)->name('tickets.index');
-    Route::get('/projets/{projet}/tickets/create', TicketForm::class)->name('tickets.create');
+    Route::get('/projets/{projet}/tickets/create', TicketForm::class)->middleware('admin')->name('tickets.create');
     Route::get('/projets/{projet}/tickets/{ticket}/edit', TicketForm::class)->name('tickets.edit');
+
+    Route::get('/projets/{projet}/modules', ModuleList::class)->middleware('admin')->name('modules.index');
+    Route::get('/projets/{projet_id}/modules/create', ModuleForm::class)->middleware('admin')->name('modules.create');
+
+    Route::get('/modules/{module}/fonctionnalites', FonctionnaliteList::class)->middleware('admin')->name('fonctionnalites.index');
+    Route::get('/modules/{module_id}/fonctionnalites/create', FonctionnaliteForm::class)->middleware('admin')->name('fonctionnalites.create');
 });
 
 require __DIR__ . '/auth.php';

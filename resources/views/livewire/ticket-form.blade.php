@@ -9,7 +9,11 @@
         <span class="mx-1 text-gray-400">/</span>
 
         <span class="text-gray-800 font-semibold">
-            {{ $ticketId ? $module : 'Nouveau ticket' }}
+            @if($ticketId && $module_id)
+                {{ $modules->firstWhere('id', $module_id)->nom ?? '—' }}
+            @else
+                Nouveau ticket
+            @endif
         </span>
     </x-slot>
 
@@ -22,14 +26,33 @@
         <form wire:submit.prevent="save">
 
             <label class="block mt-2 font-semibold">Module</label>
-            <input type="text" wire:model="module" class="w-full border rounded p-2"
-                @if(auth()->user()->role !== 'admin') disabled @endif>
-            @error('module') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            <select wire:model="module_id" 
+                    class="w-full border rounded p-2"
+                    @if(auth()->user()->role !== 'admin') disabled @endif>
+                <option value="">-- Choisir un module --</option>
+                @foreach($modules as $m)
+                    <option value="{{ $m->id }}">{{ $m->nom }}</option>
+                @endforeach
+            </select>
+            @error('module_id') 
+                <span class="text-red-500 text-sm">{{ $message }}</span> 
+            @enderror
 
-            <label class="block mt-2 font-semibold">Scenario</label>
-            <textarea wire:model="scenario" class="w-full border rounded p-2"
-                @if(auth()->user()->role !== 'admin') disabled @endif></textarea>
-            @error('scenario') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            <label class="block mt-2 font-semibold">Fonctionnalité</label>
+            <select wire:model="fonctionnalite_id" 
+                    class="w-full border rounded p-2"
+                    @if(!$module_id || auth()->user()->role !== 'admin') disabled @endif>
+                <option value="">-- Choisir une fonctionnalité --</option>
+                @foreach($fonctionnalites as $f)
+                    <option value="{{ $f->id }}">{{ $f->nom }}</option>
+                @endforeach
+            </select>
+            @error('fonctionnalite_id') 
+                <span class="text-red-500 text-sm">{{ $message }}</span> 
+            @enderror
+
+            <label class="block mt-2 font-semibold">Description de la fonctionnalité</label>
+            <textarea wire:model="fonctionnalite_description" class="w-full border rounded p-2 bg-gray-100" rows="3" disabled></textarea>
 
             <label class="block mt-2 font-semibold">Etat</label>
             <select wire:model="etat" class="w-full border rounded p-2">

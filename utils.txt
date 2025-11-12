@@ -3,6 +3,9 @@ php artisan optimize:clear
 php artisan make:model Projet -m
 php artisan make:model Ticket -m
 
+php artisan make:model Module -m
+php artisan make:model Fonctionnalite -m
+
 php artisan make:model AccesProjet -m
 
 php artisan migrate:fresh
@@ -12,6 +15,11 @@ php artisan make:livewire ProjetForm
 php artisan make:livewire TicketList
 php artisan make:livewire TicketForm
 php artisan make:export TicketsExport --model=Ticket
+
+php artisan make:livewire ModuleForm
+php artisan make:livewire ModuleList
+php artisan make:livewire FonctionnaliteForm
+php artisan make:livewire FonctionnaliteList
 
 
 composer require maatwebsite/excel
