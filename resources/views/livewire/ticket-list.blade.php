@@ -152,11 +152,7 @@
 
                     <div class="action-container">
                         <button class="menu-btn" onclick="toggleMenu({{ $ticket->id }})">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                 stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-600">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 6.75h.007v.008H12V6.75zm0 5.25h.007v.008H12V12zm0 5.25h.007v.008H12v-.008z" />
-                            </svg>
+                            <img src="{{ asset('icons/menu.png') }}" alt="filter-icon" class="w-4 h-4">
                         </button>
 
                         <div id="menu-{{ $ticket->id }}" class="menu-dropdown hidden">
