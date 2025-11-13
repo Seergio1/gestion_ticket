@@ -19,10 +19,10 @@
     </h2>
 
     <div class="flex flex-wrap sm:flex-row items-center gap-2">
-        <button id="toggleFilters"
-                class="flex items-center gap-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded transition">
+        <button id="toggleFilters">
             <img src="{{ asset('storage/icons/filtre.svg') }}" alt="filter-icon" class="w-4 h-4">
         </button>
+        
 
         @if(auth()->user()->role === 'admin')
             <a href="{{ route('tickets.create', $projet->id) }}" 

@@ -7,6 +7,9 @@
         @if(session()->has('message'))
             <div class="alert-success">{{ session('message') }}</div>
         @endif
+        @if (session()->has('error'))
+            <div class="alert-error">{{ session('error') }}</div>
+        @endif
 
         <div class="header">
             <h2></h2>
@@ -29,9 +32,22 @@
                         </button>
                         <div id="menu-{{ $projet->id }}" class="menu-dropdown hidden">
                             <ul>
+                                <li><a href="{{ route('modules.import', $projet->id) }}">Import</a></li>
                                 <li><a href="{{ route('modules.index', $projet) }}">Modules</a></li>
                                 <li><a href="{{ route('projets.edit', $projet->id) }}">Modifier</a></li>
-                                <li><button wire:click="deleteProjet({{ $projet->id }})">Supprimer</button></li>
+                                <li>
+                                    <button 
+                                        wire:click="deleteProjet({{ $projet->id }})" 
+                                        onclick="if(!confirm('Voulez-vous vraiment supprimer ce projet ?')) event.stopImmediatePropagation();"
+                                    >Supprimer</button>
+                                </li>
+                                <li>
+                                    <button 
+                                        wire:click="clearModules({{ $projet->id }})" 
+                                        onclick="if(!confirm('Voulez-vous vraiment vider tous les modules et fonctionnalités de ce projet ?')) event.stopImmediatePropagation();"
+                                    >Vider</button>
+                                </li>
+
                             </ul>
                         </div>
                     </div>

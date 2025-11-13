@@ -1,0 +1,15 @@
+.file-upload-area {
+    display: block;
+    border: 2px dashed #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.file-upload-area.dragover {
+    background-color: #e0f2fe;
+    border-color: #3b82f6;
+    color: #1e3a8a;
+}

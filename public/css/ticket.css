@@ -124,10 +124,10 @@
     background-color: #f3f4f6;
 }
 
-.ticket-card .menu-btn svg {
-    width: 20px;
-    height: 20px;
-    color: #6b7280;
+.ticket-card .menu-btn img {
+    width: 18px;
+    height: 18px;
+    display: block;
 }
 
 /* DROPDOWN */
@@ -159,7 +159,7 @@
     display: block;
     width: 100%;
     padding: 0.5rem 0.75rem;
-    text-align: left;
+    text-align: center;
     font-size: 0.875rem;
     background: none;
     border: none;
@@ -198,6 +198,11 @@
     height: 18px;
     margin-right: 0.75rem;
 }
+#toggleFilters img{
+    width: 15px;
+    height: 15px;
+    display: block;
+}
 /* === FILTRES PANEL === */
 .filters-panel {
     /* background: #f9fafb; */
@@ -212,7 +217,7 @@
 
 .filters-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1rem;
 }
 

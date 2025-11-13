@@ -83,7 +83,7 @@
             <label for="fichiers" class="file-upload-area" 
                 ondragover="this.classList.add('dragover')" 
                 ondragleave="this.classList.remove('dragover')">
-                Cliquez pour téléverser ou déposez vos fichiers ici (PNG, JPG, PDF)
+                Cliquez pour téléverser vos fichiers ici (PNG, JPG)
                 <input type="file" id="fichiers" wire:model="fichiers" multiple>
             </label>
 

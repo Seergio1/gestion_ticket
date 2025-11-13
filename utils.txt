@@ -8,6 +8,9 @@ php artisan make:model Fonctionnalite -m
 
 php artisan make:model AccesProjet -m
 
+php artisan make:livewire ModuleImport
+
+
 php artisan migrate:fresh
 
 php artisan make:livewire ProjetList

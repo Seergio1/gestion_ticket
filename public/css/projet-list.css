@@ -22,6 +22,14 @@
     margin-bottom: 1rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+.alert-error {
+    background-color: #fee2e2;
+    color: #991b1b;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
 
 .header {
     display: flex;
@@ -185,7 +193,8 @@
 .project-card .action-container .menu-dropdown li { border-bottom: 1px solid #f3f4f6;}
 .project-card .action-container .menu-dropdown li:last-child { border-bottom: none; }
 
-.project-card .action-container .menu-dropdown li:nth-child(3) button {
+.project-card .action-container .menu-dropdown li:nth-child(4) button,
+.project-card .action-container .menu-dropdown li:nth-child(5) button {
     color: #dc2626;
 }
 .project-card .action-container .menu-dropdown a,

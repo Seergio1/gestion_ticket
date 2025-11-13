@@ -16,6 +16,7 @@
         <link href="{{ asset('css/ticket.css') }}" rel="stylesheet">
         <link href="{{ asset('css/ticket-form.css') }}" rel="stylesheet">
         <link href="{{ asset('css/projet-list.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/import.css') }}" rel="stylesheet">
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
