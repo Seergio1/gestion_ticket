@@ -20,7 +20,7 @@
         </div>
 
         <div class="projects-list">
-            @foreach($fonctionnalites as $fonctionnalite)
+            @forelse ($fonctionnalites as $fonctionnalite)
                 <div class="project-card">
                     <div class="project-info">
                         <p class="">{{ $fonctionnalite->nom }}</p>
@@ -28,12 +28,16 @@
                     </div>
                     @if(auth()->user()->role === 'admin')
                         <div class="project-actions">
-                            {{-- <a href="{{ route('projets.edit', $module->id) }}" class="btn-edit">Modifier</a> --}}
-                            {{-- <button wire:click="deleteProjet({{ $module->id }})" class="btn-delete">Supprimer</button> --}}
+                            <a href="{{ route('fonctionnalites.edit', [$module->id, $fonctionnalite->id]) }}" class="btn-edit">Modifier</a>
+                            <button wire:click="deleteFonctionnalite({{ $fonctionnalite->id }})" class="btn-delete">Supprimer</button>
                         </div>
                     @endif
                 </div>
-            @endforeach
+            @empty
+                <div id="empty-container" class="col-span-full p-6 text-center text-gray-500 italic">
+                    Aucune fonctionnalité enregistré pour ce module.
+                </div>
+            @endforelse
         </div>
     </div>
 </x-layouts.app>

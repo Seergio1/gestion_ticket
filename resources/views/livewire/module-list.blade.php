@@ -18,7 +18,7 @@
         </div>
 
         <div class="projects-list">
-            @foreach($modules as $module)
+            @forelse ($modules as $module)
                 <div class="project-card">
                     <div class="project-info">
                         <a href="{{ route('fonctionnalites.index', $module) }}" class="project-title">{{ $module->nom }}</a>
@@ -27,12 +27,16 @@
                     </div>
                     @if(auth()->user()->role === 'admin')
                         <div class="project-actions">
-                            {{-- <a href="{{ route('projets.edit', $module->id) }}" class="btn-edit">Modifier</a> --}}
-                            {{-- <button wire:click="deleteProjet({{ $module->id }})" class="btn-delete">Supprimer</button> --}}
+                            <a href="{{ route('modules.edit', [$projet->id, $module->id]) }}" class="btn-edit">Modifier</a>
+                            <button wire:click="deleteProjet({{ $module->id }})" class="btn-delete">Supprimer</button>
                         </div>
                     @endif
                 </div>
-            @endforeach
+            @empty
+                <div id="empty-container" class="col-span-full p-6 text-center text-gray-500 italic">
+                    Aucun module enregistré pour ce projet.
+                </div>
+            @endforelse
         </div>
     </div>
 </x-layouts.app>

@@ -5,8 +5,7 @@
         <a href="{{ route('modules.index', $projet->id) }}" class="text-blue-600 hover:underline">Modules</a>
         <span class="mx-1 text-gray-400">/</span>
         <span class="text-gray-800 font-semibold">
-            {{-- {{ $projet ? 'Modifier le projet' : 'Nouveau projet' }} --}}
-            Nouveau module
+            {{ $module_id ? 'Modifier le module' : 'Nouveau module' }}
         </span>
     </x-slot>
 
@@ -27,7 +26,9 @@
                 <textarea wire:model="description" class="w-full border rounded p-2" placeholder="Description (optionnelle)"></textarea>
                 @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
-                <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Créer Module</button>
+                <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+                    {{ $module_id ? 'Mettre à jour' : 'Créer Module' }}
+                </button>
             </form>
         </div>
 

@@ -27,4 +27,14 @@ class ModuleList extends Component
             'projet' => $this->projet
         ]);
     }
+
+    public function deleteModule($id)
+    {
+        $user = auth()->user();
+        if ($user->role !== 'admin') abort(403);
+
+        $module = Module::findOrFail($id);
+        $module->delete();
+        session()->flash('message', 'Module supprimé avec succès');
+    }
 }

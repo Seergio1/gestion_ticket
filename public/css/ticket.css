@@ -101,7 +101,7 @@
 .badge-danger { background: #f8d7da; color: #72151c; border-color: #f1aeb5; }
 
 /* ACTIONS */
-.action-container {
+.ticket-card .action-container {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -112,7 +112,7 @@
 }
 
 /* MENU 3 POINTS */
-.menu-btn {
+.ticket-card .menu-btn {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -120,18 +120,18 @@
     border-radius: 0.25rem;
 }
 
-.menu-btn:hover {
+.ticket-card .menu-btn:hover {
     background-color: #f3f4f6;
 }
 
-.menu-btn svg {
+.ticket-card .menu-btn svg {
     width: 20px;
     height: 20px;
     color: #6b7280;
 }
 
 /* DROPDOWN */
-.menu-dropdown {
+.ticket-card .menu-dropdown {
     position: absolute;
     right: 0;
     top: 2.5rem;
@@ -145,17 +145,17 @@
     animation: dropdownFade 0.2s ease;
 }
 
-.menu-dropdown ul {
+.ticket-card .menu-dropdown ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.menu-dropdown li { border-bottom: 1px solid #f3f4f6; }
-.menu-dropdown li:last-child { border-bottom: none; }
+.ticket-card .menu-dropdown li { border-bottom: 1px solid #f3f4f6; }
+.ticket-card .menu-dropdown li:last-child { border-bottom: none; }
 
-.menu-dropdown a,
-.menu-dropdown button {
+.ticket-card .menu-dropdown a,
+.ticket-card .menu-dropdown button {
     display: block;
     width: 100%;
     padding: 0.5rem 0.75rem;
@@ -179,9 +179,9 @@
     text-overflow: ellipsis;
 }
 
-.menu-dropdown a:hover,
-.menu-dropdown button:hover { background-color: #f3f4f6; }
-.menu-dropdown button.text-red-600 { color: #dc2626; }
+.ticket-card .menu-dropdown a:hover,
+.ticket-card .menu-dropdown button:hover { background-color: #f3f4f6; }
+.ticket-card .menu-dropdown button.text-red-600 { color: #dc2626; }
 
 /* ANIMATION */
 @keyframes dropdownFade {

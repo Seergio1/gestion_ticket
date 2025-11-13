@@ -21,7 +21,7 @@
     <div class="flex flex-wrap sm:flex-row items-center gap-2">
         <button id="toggleFilters"
                 class="flex items-center gap-1 bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded transition">
-            <img src="{{ asset('icons/filtre.svg') }}" alt="filter-icon" class="w-4 h-4">
+            <img src="{{ asset('storage/icons/filtre.svg') }}" alt="filter-icon" class="w-4 h-4">
         </button>
 
         @if(auth()->user()->role === 'admin')
@@ -152,7 +152,7 @@
 
                     <div class="action-container">
                         <button class="menu-btn" onclick="toggleMenu({{ $ticket->id }})">
-                            <img src="{{ asset('icons/menu.png') }}" alt="filter-icon" class="w-4 h-4">
+                            <img src="{{ asset('storage/icons/menu.png') }}" alt="filter-icon" class="w-4 h-4">
                         </button>
 
                         <div id="menu-{{ $ticket->id }}" class="menu-dropdown hidden">
@@ -175,6 +175,7 @@
                             </ul>
                         </div>
                     </div>
+                    
                 </div>
             @empty
                 <div class="col-span-full p-6 text-center text-gray-500 italic">

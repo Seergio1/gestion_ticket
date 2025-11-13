@@ -8,7 +8,7 @@
         <span class="mx-1 text-gray-400">/</span>
         <span class="text-gray-800 font-semibold">
             {{-- {{ $projet ? 'Modifier le projet' : 'Nouveau projet' }} --}}
-            Nouvelle fonctionnalité
+            {{ $fonctionnalite_id ? 'Modifier la fonctionnalité' : 'Nouvelle fonctionnalité' }}
         </span>
     </x-slot>
 
@@ -29,7 +29,9 @@
                 <textarea wire:model="description" class="w-full border rounded p-2" placeholder="Description (optionnelle)"></textarea>
                 @error('description') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
 
-                <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Créer Fonctionnalité</button>
+                <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">
+                    {{ $fonctionnalite_id ? 'Mettre à jour' : 'Créer Fonctionnalité' }}
+                </button>
             </form>
         </div>
 

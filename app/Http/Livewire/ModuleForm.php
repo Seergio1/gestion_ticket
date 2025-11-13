@@ -12,9 +12,17 @@ class ModuleForm extends Component
     public $nom;
     public $description;
 
-    public function mount($projet_id)
+    public $module_id;
+
+    public function mount($projet_id, $module_id = null)
     {
         $this->projet_id = $projet_id;
+        $this->module_id = $module_id;
+        if ($this->module_id) {
+            $module = Module::findOrFail($this->module_id);
+            $this->nom = $module->nom;
+            $this->description = $module->description;
+        }
     }
 
     public function save()
@@ -24,15 +32,24 @@ class ModuleForm extends Component
             'description' => 'nullable|string',
         ]);
 
-        Module::create([
-            'nom' => $this->nom,
-            'description' => $this->description,
-            'projet_id' => $this->projet_id
-        ]);
-
-        session()->flash('message', 'Module créé avec succès.');
-        $this->reset(['nom', 'description']);
-        // return redirect()->route('modules.index', $this->projet_id);
+        if ($this->module_id) {
+            // Modification
+            $module = Module::findOrFail($this->module_id);
+            $module->update([
+                'nom' => $this->nom,
+                'description' => $this->description,
+            ]);
+            session()->flash('message', 'Module mis à jour avec succès.');
+        } else {
+            // Création
+            Module::create([
+                'nom' => $this->nom,
+                'description' => $this->description,
+                'projet_id' => $this->projet_id
+            ]);
+            session()->flash('message', 'Module créé avec succès.');
+            $this->reset(['nom', 'description']);
+        }
     }
 
     public function render()

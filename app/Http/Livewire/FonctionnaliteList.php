@@ -18,11 +18,17 @@ class FonctionnaliteList extends Component
     public function render()
     {
         $fonctionnalites = Fonctionnalite::where('module_id', $this->module->id)->get();
-        // $nom_projet = $this->module->projet->nom;
 
         return view('livewire.fonctionnalite-list', [
             'module' => $this->module,
             'fonctionnalites' => $fonctionnalites,
         ]);
+    }
+
+    public function deleteFonctionnalite($id)
+    {
+        $fonctionnalite = Fonctionnalite::findOrFail($id);
+        $fonctionnalite->delete();
+        session()->flash('message', 'Fonctionnalité supprimée avec succès');
     }
 }

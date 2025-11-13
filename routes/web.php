@@ -27,7 +27,8 @@ Route::get('/', function () {
 
 
 // Routes protégées par auth
-Route::middleware(['auth', 'verified'])->group(function () {
+// Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/projets', ProjetList::class)->name('projets.index');
     Route::get('/projets/create', ProjetForm::class)->middleware('admin')->name('projets.create');
     Route::get('/projets/{projet}/edit', ProjetForm::class)->middleware('admin')->name('projets.edit');
@@ -38,9 +39,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/projets/{projet}/modules', ModuleList::class)->middleware('admin')->name('modules.index');
     Route::get('/projets/{projet_id}/modules/create', ModuleForm::class)->middleware('admin')->name('modules.create');
+    Route::get('/projets/{projet_id}/modules/{module_id}/edit', ModuleForm::class)->middleware('admin')->name('modules.edit');
 
     Route::get('/modules/{module}/fonctionnalites', FonctionnaliteList::class)->middleware('admin')->name('fonctionnalites.index');
     Route::get('/modules/{module_id}/fonctionnalites/create', FonctionnaliteForm::class)->middleware('admin')->name('fonctionnalites.create');
+    Route::get('/modules/{module_id}/fonctionnalites/{fonctionnalite_id}/edit', FonctionnaliteForm::class)->middleware('admin')->name('fonctionnalites.edit');
 });
 
 require __DIR__ . '/auth.php';

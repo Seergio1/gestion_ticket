@@ -51,8 +51,15 @@
 .projects-list {
     background-color: #fff;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    overflow: hidden;
+    /* box-shadow: 0 2px 5px rgba(0,0,0,0.05); */
+    overflow: visible;
+}
+
+.projects-list #empty-container {
+    background-color: #f3f4f6 ;
+    padding: 1rem;
+    text-align: center;
+    color: #9ca3af;
 }
 
 .project-card {
@@ -62,7 +69,7 @@
     padding: 1rem;
     border-bottom: 1px solid #e5e7eb;
     transition: background 0.2s;
-    
+    position: relative;
 }
 
 .project-card:hover {
@@ -122,3 +129,78 @@
 .btn-delete:hover {
     background-color: #b91c1c;
 }
+
+
+/* ACTIONS */
+.project-card .action-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 0.5rem;
+    position: relative;
+}
+
+/* MENU 3 POINTS */
+.project-card .action-container .menu-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    box-shadow: none;
+    outline: none;
+}
+
+.project-card .action-container .menu-btn:hover {
+    background-color: #f3f4f6;
+}
+
+.project-card .action-container .menu-btn img {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+/* DROPDOWN */
+.project-card .action-container .menu-dropdown {
+    position: absolute;
+    right: 0;
+    top: 2.5rem;
+    background-color: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 100;
+    min-width: 140px;
+    overflow: hidden;
+    animation: dropdownFade 0.2s ease;
+}
+
+.project-card .action-container .menu-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.project-card .action-container .menu-dropdown li { border-bottom: 1px solid #f3f4f6;}
+.project-card .action-container .menu-dropdown li:last-child { border-bottom: none; }
+
+.project-card .action-container .menu-dropdown li:nth-child(3) button {
+    color: #dc2626;
+}
+.project-card .action-container .menu-dropdown a,
+.project-card .action-container .menu-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    font-size: 0.875rem;
+    background: none;
+    border: none;
+    color: #374151;
+    cursor: pointer;
+}
+
+.project-card .action-container .menu-dropdown a:hover,
+.project-card .action-container .menu-dropdown button:hover { background-color: #f3f4f6; }
+.project-card .action-container .menu-dropdown button.text-red-600 { color: #dc2626; }
