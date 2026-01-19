@@ -26,31 +26,34 @@
                         <p class="project-desc">{{ $projet->description }}</p>
                         <p class="project-count">{{ $projet->tickets_count }} tickets</p>
                     </div>
-                    <div class="action-container">
-                        <button class="menu-btn" onclick="toggleMenu({{ $projet->id }})">
-                            <img src="{{ asset('storage/icons/menu.png') }}" alt="filter-icon" class="w-4 h-4">
-                        </button>
-                        <div id="menu-{{ $projet->id }}" class="menu-dropdown hidden">
-                            <ul>
-                                <li><a href="{{ route('modules.import', $projet->id) }}">Import</a></li>
-                                <li><a href="{{ route('modules.index', $projet) }}">Modules</a></li>
-                                <li><a href="{{ route('projets.edit', $projet->id) }}">Modifier</a></li>
-                                <li>
-                                    <button 
-                                        wire:click="deleteProjet({{ $projet->id }})" 
-                                        onclick="if(!confirm('Voulez-vous vraiment supprimer ce projet ?')) event.stopImmediatePropagation();"
-                                    >Supprimer</button>
-                                </li>
-                                <li>
-                                    <button 
-                                        wire:click="clearModules({{ $projet->id }})" 
-                                        onclick="if(!confirm('Voulez-vous vraiment vider tous les modules et fonctionnalités de ce projet ?')) event.stopImmediatePropagation();"
-                                    >Vider</button>
-                                </li>
+                    @if(auth()->user()->role === 'admin')
+                        <div class="action-container">
+                            <button class="menu-btn" onclick="toggleMenu({{ $projet->id }})">
+                                <img src="{{ asset('storage/icons/menu.png') }}" alt="filter-icon" class="w-4 h-4">
+                            </button>
+                            <div id="menu-{{ $projet->id }}" class="menu-dropdown hidden">
+                                <ul>
+                                    <li><a href="{{ route('modules.import', $projet->id) }}">Import</a></li>
+                                    <li><a href="{{ route('modules.index', $projet) }}">Modules</a></li>
+                                    <li><a href="{{ route('projets.edit', $projet->id) }}">Modifier</a></li>
+                                    <li>
+                                        <button 
+                                            wire:click="deleteProjet({{ $projet->id }})" 
+                                            onclick="if(!confirm('Voulez-vous vraiment supprimer ce projet ?')) event.stopImmediatePropagation();"
+                                        >Supprimer</button>
+                                    </li>
+                                    <li>
+                                        <button 
+                                            wire:click="clearModules({{ $projet->id }})" 
+                                            onclick="if(!confirm('Voulez-vous vraiment vider tous les modules et fonctionnalités de ce projet ?')) event.stopImmediatePropagation();"
+                                        >Vider</button>
+                                    </li>
 
-                            </ul>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    @endif
+                    
                 </div>
             @endforeach
         </div>

@@ -345,3 +345,143 @@
         text-align: center;
     }
 }
+
+
+/* table ticket */
+/* ==== TABLE TICKETS ==== */
+
+.ticket-table-wrapper {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.ticket-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
+}
+
+.ticket-table thead {
+    background: #f9fafb;
+}
+
+.ticket-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+.ticket-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.ticket-table td, 
+.ticket-table th {
+    display: table-cell; /* forcer le comportement standard */
+    vertical-align: middle; /* aligner verticalement au centre */
+}
+
+
+
+.ticket-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+/* truncate cellules */
+.truncate-cell {
+    max-width: 240px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Actions */
+.ticket-table .menu-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.wrap-cell {
+    white-space: normal;      /* autorise retour à la ligne */
+    word-break: break-word;   /* casse les mots trop longs */
+    line-height: 1.4;
+    max-width: 320px;         /* ajustable selon ton design */
+}
+/* === BADGES RESPONSIVE === */
+
+.badge-wrapper {
+    display: flex;
+    flex-wrap: wrap;     /* autorise retour à la ligne */
+    gap: 0.25rem;
+    max-width: 100%;
+}
+
+.badge {
+    white-space: nowrap;  /* évite coupure du texte */
+    max-width: 100%;
+}
+
+/* Mobile : badges prennent toute la largeur si besoin */
+@media (max-width: 640px) {
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.45rem;
+    }
+}
+
+/* === ACTIONS TABLE === */
+.ticket-table td.actions-cell {
+    vertical-align: middle;
+}
+.actions-cell {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9fafb;
+    /* border: 1px solid #e5e7eb; */
+    transition: all 0.2s ease;
+    cursor: pointer;
+    margin : 0.25rem 0;
+}
+
+.action-btn img {
+    width: 16px;
+    height: 16px;
+}
+
+/* Modifier */
+.action-btn.edit:hover {
+    background: #e0f2fe;
+    border-color: #38bdf8;
+}
+
+/* Supprimer */
+.action-btn.delete:hover {
+    background: #fee2e2;
+    border-color: #f87171;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .ticket-table th,
+    .ticket-table td {
+        padding: 0.5rem;
+    }
+}

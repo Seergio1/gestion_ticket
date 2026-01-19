@@ -29,12 +29,13 @@
             class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
                 Création
             </a>
-        @endif
 
-        <button id="ExportButton" wire:click="exportExcel"
+            <button id="ExportButton" wire:click="exportExcel"
                 class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
             Excel
         </button>
+        @endif
+
     </div>
 </div>
 
@@ -91,7 +92,7 @@
     </div>
 
 
-        <div class="flex flex-wrap gap-4">
+        {{-- <div class="flex flex-wrap gap-4">
             @forelse($tickets as $ticket)
                 <div class="ticket-card">
                     <div class="header-ticket">
@@ -182,7 +183,110 @@
                     Aucun ticket enregistré pour ce projet.
                 </div>
             @endforelse
-        </div>
+        </div> --}}
+
+    <div class="ticket-table-wrapper">
+        <table class="ticket-table">
+            <thead>
+                <tr>
+                    <th>ID / Module</th>
+                    <th>Fonctionnalité</th>
+                    <th>Description</th>
+                    <th>Créé par</th>
+                    <th>État</th>
+                    <th>Status</th>
+                    <th>Fichiers</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            @forelse($tickets as $ticket)
+                <tr>
+                    <td>
+                        <div class="font-medium">
+                            {{ $ticket->id }} - {{ $ticket->module ? $ticket->module->nom : '—' }}
+                        </div>
+                    </td>
+
+                    <td class="wrap-cell">
+                        {{ $ticket->fonctionnalite ? $ticket->fonctionnalite->nom : '—' }}
+                    </td>
+
+                    <td class="wrap-cell">
+                        {{ $ticket->fonctionnalite ? $ticket->fonctionnalite->description : '—' }}
+                    </td>
+
+
+                    <td>
+                        <span class="text-gray-700">{{ $ticket->creator->name }}</span>
+                    </td>
+
+                    <td>
+                        <div class="badge-wrapper">
+                            <span class="badge {{ $ticket->etat === 'en cours' ? 'badge-warning' : 'badge-success' }}">
+                                {{ ucfirst($ticket->etat) }}
+                            </span>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="badge-wrapper">
+                            <span class="badge 
+                                {{ $ticket->status === 'ok' ? 'badge-success' :
+                                ($ticket->status === 'à améliorer' ? 'badge-warning' : 'badge-danger') }}">
+                                {{ ucfirst($ticket->status) }}
+                            </span>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        @if($ticket->fichiers && count($ticket->fichiers))
+                            <ul class="flex flex-col gap-1">
+                                @foreach($ticket->fichiers as $file)
+                                    <li>
+                                        <a href="{{ asset('storage/'.$file) }}" target="_blank"
+                                        class="text-blue-600 hover:underline text-sm">
+                                            Fichier_{{ $loop->iteration }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            —
+                        @endif
+                    </td>
+
+                    <td class="actions-cell">
+                        <a href="{{ route('tickets.edit', ['projet' => $projet->id, 'ticket' => $ticket->id]) }}"
+                        class="action-btn edit"
+                        title="Modifier">
+                            <img src="{{ asset('storage/icons/edit.svg') }}" alt="modifier">
+                        </a>
+
+                        @if(auth()->user()->role === 'admin')
+                            <button wire:click="deleteTicket({{ $ticket->id }})"
+                                    onclick="confirm('Voulez-vous vraiment supprimer ce ticket ?') || event.stopImmediatePropagation()"
+                                    class="action-btn delete"
+                                    title="Supprimer">
+                                <img src="{{ asset('storage/icons/trash.svg') }}" alt="supprimer">
+                            </button>
+                        @endif
+                    </td>
+
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="8" class="text-center py-6 text-gray-500 italic">
+                        Aucun ticket enregistré pour ce projet.
+                    </td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+
     </div>
 
     <script>

@@ -1,3 +1,5 @@
+php artisan serve
+
 php artisan optimize:clear
 
 php artisan make:model Projet -m
