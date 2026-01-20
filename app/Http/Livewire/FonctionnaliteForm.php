@@ -13,7 +13,7 @@ class FonctionnaliteForm extends Component
     public $description;
     public $fonctionnalite_id;
 
-    public function mount($module_id, $fonctionnalite_id)
+    public function mount($module_id, $fonctionnalite_id = null)
     {
         $this->module_id = $module_id;
         $this->fonctionnalite_id = $fonctionnalite_id;
