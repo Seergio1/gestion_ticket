@@ -9,6 +9,7 @@ use App\Http\Livewire\TicketList;
 use App\Http\Livewire\TicketForm;
 use App\Http\Livewire\ModuleForm;
 use App\Http\Livewire\ModuleList;
+use App\Http\Livewire\ChangePassword;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,8 @@ Route::get('/', function () {
 // Routes protégées par auth
 // Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth'])->group(function () {
+    Route::get('/profile/change-password', ChangePassword::class)->name('profile.change-password');
+
     Route::get('/projets', ProjetList::class)->name('projets.index');
     Route::get('/projets/create', ProjetForm::class)->middleware('admin')->name('projets.create');
     Route::get('/projets/{projet}/edit', ProjetForm::class)->middleware('admin')->name('projets.edit');
