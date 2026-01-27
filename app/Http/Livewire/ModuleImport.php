@@ -51,7 +51,7 @@ class ModuleImport extends Component
             return;
         }
 
-        $header = $rows[0];
+        $header = $rows[1];
         if (!isset($header['A'], $header['B'], $header['C'], $header['D'])) {
             session()->flash('error', 'Le fichier ne correspond pas au format attendu (colonnes A à D).');
             return;

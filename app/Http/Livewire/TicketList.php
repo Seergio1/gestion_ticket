@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Exports\TicketsExport;
+use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Projet;
@@ -11,6 +12,9 @@ use Livewire\Component;
 
 class TicketList extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'tailwind';
+
     public $projet;
     public $modules = [];
     public $etat = '';
@@ -56,11 +60,19 @@ class TicketList extends Component
             $query->whereBetween('created_at', [$this->dateDebut, $this->dateFin]);
         }
 
-        $tickets = $query->orderBy('created_at', 'asc')->get();
+        // $tickets = $query->orderBy('created_at', 'asc')->get();
+        $tickets = $query->orderBy('created_at', 'asc')->paginate(5);
 
         return view('livewire.ticket-list', [
             'tickets' => $tickets
         ]);
+    }
+
+    public function updating($name, $value)
+    {
+        if (in_array($name, ['etat', 'status', 'module_id', 'dateDebut', 'dateFin'])) {
+            $this->resetPage();
+        }
     }
 
     public function exportExcel()

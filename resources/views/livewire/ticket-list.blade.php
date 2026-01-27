@@ -5,7 +5,7 @@
         <span class="text-gray-500">{{ $projet->nom }}</span>
     </x-slot>
 
-    <div class="max-w-6xl mx-auto p-4">
+<div class="max-w-6xl mx-auto p-4">
         @if(session()->has('message'))
             <div class="bg-green-100 text-green-800 p-2 rounded mb-4 shadow-sm">
                 {{ session('message') }}
@@ -14,34 +14,36 @@
 
         {{-- === EN-TÊTE === --}}
         <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-2">
-    <h2 class="text-xl font-semibold text-gray-800">
-        Tickets pour <span class="text-blue-600">{{ $projet->nom }} ({{ count($tickets) }})</span>
-    </h2>
+            {{-- <h2 class="text-xl font-semibold text-gray-800">
+                Tickets pour <span class="text-blue-600">{{ $projet->nom }} ({{ count($tickets) }})</span>
+            </h2> --}}
 
-    <div class="flex flex-wrap sm:flex-row items-center gap-2">
-        <button id="toggleFilters">
-            <img src="{{ asset('storage/icons/filtre.svg') }}" alt="filter-icon" class="w-4 h-4">
-        </button>
-        
+            <h2 class="text-xl font-semibold text-gray-800">
+                Tickets pour <span class="text-blue-600">{{ $projet->nom }} ({{ $tickets->total() }})</span>
+            </h2>
 
-        @if(auth()->user()->role === 'admin')
-            <a href="{{ route('tickets.create', $projet->id) }}" 
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
-                Création
-            </a>
+            <div class="flex flex-wrap sm:flex-row items-center gap-2">
+                <button id="toggleFilters">
+                    <img src="{{ asset('storage/icons/filtre.svg') }}" alt="filter-icon" class="w-4 h-4">
+                </button>
+                
 
-            <button id="ExportButton" wire:click="exportExcel"
-                class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
-            Excel
-        </button>
-        @endif
+                @if(auth()->user()->role === 'admin')
+                    <a href="{{ route('tickets.create', $projet->id) }}" 
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
+                        Création
+                    </a>
 
-    </div>
-</div>
+                    <button id="ExportButton" wire:click="exportExcel"
+                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+                    Excel
+                </button>
+                @endif
 
+            </div>
+        </div>
 
-
-        <div id="filtersPanel" class="filters-panel hidden">
+    <div id="filtersPanel" class="filters-panel hidden">
         <div class="filters-grid">
             <div class="filter-item">
                 <label>Module</label>
@@ -241,9 +243,10 @@
                     </td>
 
 
-                    <td>
+                    <td style="text-align: center;">
                         @if($ticket->fichiers && count($ticket->fichiers))
-                            <ul class="flex flex-col gap-1">
+                            {{ count($ticket->fichiers) }}
+                            {{-- <ul class="flex flex-col gap-1">
                                 @foreach($ticket->fichiers as $file)
                                     <li>
                                         <a href="{{ asset('storage/'.$file) }}" target="_blank"
@@ -252,7 +255,7 @@
                                         </a>
                                     </li>
                                 @endforeach
-                            </ul>
+                            </ul> --}}
                         @else
                             —
                         @endif
@@ -272,6 +275,12 @@
                                     title="Supprimer">
                                 <img src="{{ asset('storage/icons/trash.svg') }}" alt="supprimer">
                             </button>
+
+                            <a href="{{ route('tickets.history', ['projet' => $projet->id, 'ticket' => $ticket->id]) }}"
+                            class="action-btn list"
+                            title="Liste">
+                                <img src="{{ asset('storage/icons/history.png') }}" alt="liste">
+                            </a>
                         @endif
                     </td>
 
@@ -285,9 +294,17 @@
             @endforelse
             </tbody>
         </table>
+
+        {{-- pagination --}}
+        <div class="mt-4 mb-4 flex justify-center">
+            {{ $tickets->links() }}
+        </div>
     </div>
 
-    </div>
+    
+
+
+</div>
 
     <script>
         function toggleMenu(id) {

@@ -161,6 +161,32 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   CONSTRAINT `tickets_updated_by_foreign` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+
+CREATE TABLE IF NOT EXISTS `ticket_histories` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ticket_id` bigint(20) unsigned NOT NULL,
+  `projet_id` bigint(20) unsigned NOT NULL,
+  `module_id` bigint(20) unsigned NOT NULL,
+  `fonctionnalite_id` bigint(20) unsigned DEFAULT NULL,
+  `etat` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `commentaire` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `fichiers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`fichiers`)),
+  `updated_by` bigint(20) unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ticket_histories_ticket_id_foreign` (`ticket_id`),
+  KEY `ticket_histories_projet_id_foreign` (`projet_id`),
+  KEY `ticket_histories_module_id_foreign` (`module_id`),
+  KEY `ticket_histories_fonctionnalite_id_foreign` (`fonctionnalite_id`),
+  KEY `ticket_histories_updated_by_foreign` (`updated_by`),
+  CONSTRAINT `ticket_histories_fonctionnalite_id_foreign` FOREIGN KEY (`fonctionnalite_id`) REFERENCES `fonctionnalites` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `ticket_histories_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ticket_histories_projet_id_foreign` FOREIGN KEY (`projet_id`) REFERENCES `projets` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ticket_histories_ticket_id_foreign` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `ticket_histories_updated_by_foreign` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- Les données exportées n'étaient pas sélectionnées.
 
 -- Listage de la structure de table project_management. acces_projets

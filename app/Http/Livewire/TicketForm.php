@@ -125,6 +125,22 @@ class TicketForm extends Component
             $ticket->fonctionnalite_id = $this->fonctionnalite_id;
         }
 
+        // historique modification ticket
+        if ($this->ticketId) {
+            \App\Models\TicketHistory::create([
+                'ticket_id' => $ticket->id,
+                'projet_id' => $ticket->projet_id,
+                'module_id' => $ticket->module_id,
+                'fonctionnalite_id' => $ticket->fonctionnalite_id,
+                'etat' => $ticket->etat,
+                'status' => $ticket->status,
+                'commentaire' => $ticket->commentaire,
+                'fichiers' => $ticket->fichiers,
+                'updated_by' => Auth::id(),
+            ]);
+        }
+
+
         $ticket->etat = $this->etat;
         $ticket->status = $this->status;
         $ticket->commentaire = $this->commentaire;

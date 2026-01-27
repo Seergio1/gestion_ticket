@@ -46,11 +46,11 @@
                     {{ __('Vous n\'avez pas de compte?') }}
                 </a>
 
-                @if (Route::has('password.request'))
+                {{-- @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         {{ __('Mot de passe oublié?') }}
                     </a>
-                @endif
+                @endif --}}
                 
                 <x-button class="ml-3">
                     {{ __('Se connecter') }}

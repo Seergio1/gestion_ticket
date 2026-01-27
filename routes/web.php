@@ -41,6 +41,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projets/{projet}/tickets/create', TicketForm::class)->middleware('admin')->name('tickets.create');
     Route::get('/projets/{projet}/tickets/{ticket}/edit', TicketForm::class)->name('tickets.edit');
 
+    // historique des tickets
+    Route::get('/projets/{projet}/tickets/{ticket}/history', \App\Http\Livewire\TicketHistory::class)->name('tickets.history');
+
     Route::get('/projets/{projet}/modules', ModuleList::class)->middleware('admin')->name('modules.index');
     Route::get('/projets/{projet_id}/modules/create', ModuleForm::class)->middleware('admin')->name('modules.create');
     Route::get('/projets/{projet_id}/modules/{module_id}/edit', ModuleForm::class)->middleware('admin')->name('modules.edit');

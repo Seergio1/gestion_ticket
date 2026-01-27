@@ -281,6 +281,13 @@
     transform: translateY(-10px);
     pointer-events: none;
 }
+
+nav[aria-label="Pagination Navigation"] p.text-sm.text-gray-700.leading-5 {
+    display: none;
+}
+
+
+
 /* MEDIA QUERIES */
 @media (max-width: 768px) {
     .ticket-card {
@@ -476,6 +483,11 @@
 .action-btn.delete:hover {
     background: #fee2e2;
     border-color: #f87171;
+}
+
+.action-btn.list:hover {
+    background: #fff3cd;
+    border-color: #ffe69c;
 }
 
 /* Mobile */

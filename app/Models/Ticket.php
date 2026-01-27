@@ -16,6 +16,11 @@ class Ticket extends Model
         'fichiers' => 'array'
     ];
 
+    public function histories()
+    {
+        return $this->hasMany(TicketHistory::class);
+    }
+
     public function projet()
     {
         return $this->belongsTo(Projet::class, 'projet_id');
