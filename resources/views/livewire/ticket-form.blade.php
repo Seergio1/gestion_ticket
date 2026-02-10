@@ -28,7 +28,8 @@
             <label class="block mt-2 font-semibold">Module</label>
             <select wire:model="module_id" 
                     class="w-full border rounded p-2"
-                    @if(auth()->user()->role !== 'admin') disabled @endif>
+                    {{-- @if(auth()->user()->role !== 'admin') disabled @endif --}}
+                    >
                 <option value="">-- Choisir un module --</option>
                 @foreach($modules as $m)
                     <option value="{{ $m->id }}">{{ $m->nom }}</option>
@@ -41,7 +42,8 @@
             <label class="block mt-2 font-semibold">Fonctionnalité</label>
             <select wire:model="fonctionnalite_id" 
                     class="w-full border rounded p-2"
-                    @if(!$module_id || auth()->user()->role !== 'admin') disabled @endif>
+                    {{-- @if(!$module_id || auth()->user()->role !== 'admin') disabled @endif --}}
+                    >
                 <option value="">-- Choisir une fonctionnalité --</option>
                 @foreach($fonctionnalites as $f)
                     <option value="{{ $f->id }}">{{ $f->nom }}</option>

@@ -36,7 +36,6 @@ class TicketForm extends Component
     protected $rules = [
         'module_id' => 'required|exists:modules,id',
         'fonctionnalite_id' => 'required|exists:fonctionnalites,id',
-        // 'scenario' => 'required|string',
         'etat' => 'required|in:en cours,terminé',
         'status' => 'required|in:ok,à améliorer,non ok',
         'commentaire' => 'nullable|string',
@@ -55,11 +54,10 @@ class TicketForm extends Component
 
         if ($ticket) {
             $ticket = Ticket::findOrFail($ticket);
-            Log::info($ticket);
+            // Log::info($ticket);
             $this->ticketId = $ticket->id;
             $this->module_id = $ticket->module_id ?? null;
             $this->fonctionnalite_id = $ticket->fonctionnalite_id ?? null;
-            // $this->scenario = $ticket->scenario;
             $this->etat = $ticket->etat;
             $this->status = $ticket->status;
             $this->commentaire = $ticket->commentaire;
@@ -91,12 +89,6 @@ class TicketForm extends Component
 
     public function save()
     {
-        //     if (!$this->ticketId && Auth::user()->role !== 'admin') {
-        //         session()->flash('message', 'Vous n’êtes pas autorisé à créer un ticket.');
-        //         return redirect()->route('tickets.index', $this->projet->id);
-        //     }
-
-
         // Vérification avant création
         if ($this->modules->isEmpty()) {
             $this->addError('module_id', 'Impossible de créer un ticket : aucun module disponible.');
@@ -108,25 +100,23 @@ class TicketForm extends Component
             return;
         }
 
-        if (!$this->ticketId && Auth::user()->role !== 'admin') {
-            $this->addError('general', 'Vous n’êtes pas autorisé à créer un ticket.');
-            return;
-        }
-
         $this->validate();
 
-        $ticket = $this->ticketId
-            ? Ticket::findOrFail($this->ticketId)
-            : new Ticket(['projet_id' => $this->projet->id, 'created_by' => Auth::id()]);
+        // Au moment de la création du ticket, si un ticket qui reference déjà la fonctionnalité et le module qu'on a choisi
+        // on update le ticket qui a deja ce module et cette fonctionnalité, sinon on cree un nouveau ticket
+        if ($this->ticketId) {
+            $ticket = Ticket::findOrFail($this->ticketId);
 
-        // Empêche les non-admins de modifier module et scenario
-        if (Auth::user()->role === 'admin') {
             $ticket->module_id = $this->module_id;
             $ticket->fonctionnalite_id = $this->fonctionnalite_id;
-        }
+            $ticket->etat = $this->etat;
+            $ticket->status = $this->status;
+            $ticket->commentaire = $this->commentaire;
+            $ticket->fichiers = $this->fichiersExistants;
+            $ticket->updated_by = Auth::id();
+            $ticket->save();
 
-        // historique modification ticket
-        if ($this->ticketId) {
+            // historique modification ticket
             \App\Models\TicketHistory::create([
                 'ticket_id' => $ticket->id,
                 'projet_id' => $ticket->projet_id,
@@ -138,16 +128,50 @@ class TicketForm extends Component
                 'fichiers' => $ticket->fichiers,
                 'updated_by' => Auth::id(),
             ]);
+            session()->flash('message', 'Ticket mis à jour !');
+        } else {
+            // recherche un ticket par sa fonctionnalité et son module
+            $ticket = Ticket::where('fonctionnalite_id', $this->fonctionnalite_id)
+                ->where('module_id', $this->module_id)
+                ->first();
+
+            if ($ticket) {
+                $ticket->etat = $this->etat;
+                $ticket->status = $this->status;
+                $ticket->commentaire = $this->commentaire;
+                $ticket->fichiers = $this->fichiersExistants;
+                $ticket->save();
+
+                // mettre dans l'historique le ticket
+                \App\Models\TicketHistory::create([
+                    'ticket_id' => $ticket->id,
+                    'projet_id' => $ticket->projet_id,
+                    'module_id' => $ticket->module_id,
+                    'fonctionnalite_id' => $ticket->fonctionnalite_id,
+                    'etat' => $ticket->etat,
+                    'status' => $ticket->status,
+                    'commentaire' => $ticket->commentaire,
+                    'fichiers' => $ticket->fichiers,
+                    'updated_by' => Auth::id(),
+                ]);
+
+                session()->flash('message', 'Ticket modifié avec succès');
+                return redirect()->route('tickets.index', $this->projet->id);
+            } else {
+                $ticket = new Ticket([
+                    'projet_id' => $this->projet->id,
+                    'module_id' => $this->module_id,
+                    'fonctionnalite_id' => $this->fonctionnalite_id,
+                    'etat' => $this->etat,
+                    'status' => $this->status,
+                    'commentaire' => $this->commentaire,
+                    'fichiers' => $this->fichiersExistants,
+                    'created_by' => Auth::id(),
+                ]);
+                $ticket->save();
+                session()->flash('message', 'Ticket créé !');
+            }
         }
-
-
-        $ticket->etat = $this->etat;
-        $ticket->status = $this->status;
-        $ticket->commentaire = $this->commentaire;
-        $ticket->fichiers = $this->fichiersExistants;
-        $ticket->updated_by = Auth::id();
-
-        $ticket->save();
 
         // Supprimer les fichiers marqués pour suppression
         if (!empty($this->fichiersASupprimer)) {
@@ -157,8 +181,6 @@ class TicketForm extends Component
                 }
             }
         }
-
-        session()->flash('message', $this->ticketId ? 'Ticket mis à jour !' : 'Ticket créé !');
 
         return redirect()->route('tickets.index', $this->projet->id);
     }
